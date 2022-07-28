@@ -1,0 +1,21 @@
+@startuml Basic Sample
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(admin, "Administrator")
+System_Boundary(c1, "Sample System") {
+    Container(product_controller, "Product Controller", "Java, Spring Boot", "Allows admin create new products")
+    Container(service_layer, "Product Service", "Java", "Validations")
+    Container(repository_layer, "Product Repository", "Spring Data JPA/Postgresql", "JPA database abstraction")
+    ContainerDb(database, "Product Schema", "Postgresql", "Postgresql DB")
+}
+
+Rel(admin, product_controller, "Request")
+Rel(product_controller, service_layer, "CRUD Impl")
+Rel(service_layer, repository_layer, "JPA Abstraction")
+Rel(repository_layer, database, "Read/Write DB")
+
+Rel(product_controller, admin, "Response")
+Rel(service_layer, product_controller, "CRUD Impl")
+Rel(repository_layer, service_layer, "JPA Abstraction")
+Rel(database, repository_layer, "Read/Write DB")
+@enduml
